@@ -24,10 +24,13 @@ const fontStyles = `
   
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   body {
     font-family: 'Rubik', sans-serif !important;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
   
   img {
@@ -288,13 +291,13 @@ export default function App() {
   };
 
   return (
-    <main className={`min-h-screen bg-gradient-to-b ${theme.gradientBg} ${theme.text} overflow-hidden transition-colors duration-500`} dir="rtl">
+    <main className={`min-h-screen w-full relative bg-gradient-to-b ${theme.gradientBg} ${theme.text} overflow-x-hidden transition-colors duration-500`} dir="rtl">
       <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
 
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
         <div className={`absolute inset-0 opacity-50 transition-opacity duration-500 ${isDarkMode ? 'premium-grid-dark' : 'premium-grid-light'}`} />
-        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full blur-[140px] transition-colors duration-500 ${theme.glowTop}`} />
-        <div className={`absolute bottom-[20%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[160px] transition-colors duration-500 ${theme.glowSide}`} />
+        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[150%] sm:w-[1000px] h-[300px] sm:h-[500px] rounded-full blur-[80px] sm:blur-[140px] transition-colors duration-500 ${theme.glowTop}`} />
+        <div className={`absolute bottom-[20%] -left-[20%] sm:left-[-10%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full blur-[80px] sm:blur-[160px] transition-colors duration-500 ${theme.glowSide}`} />
       </div>
 
       <AnimatePresence mode="wait">
@@ -645,7 +648,7 @@ export default function App() {
               <p className={`text-sm sm:text-base border-b pb-4 sm:pb-6 ${theme.pricingDivider} ${isDarkMode ? 'text-zinc-300' : 'text-zinc-800'}`}>
                 הפרטיות שלכם חשובה לנו מאין כמותה. ב-<strong>NovaX</strong> אנו מתחייבים לאסוף אך ורק את המידע המינימלי ההכרחי לתפעול תקין ויציב של המערכת.
                 <br /><br />
-                כניסתכם ושימושכם בפלטפורמה מעידים על הסכמתכם המלאה לעקרונות המפורטים במסמך זה.
+                כניסתכם ושימושכם בפלטפורמה מעידים על הסכמתכם המלאה לעקרונות במפורטים במסמך זה.
               </p>
 
               <div className="space-y-3 sm:space-y-4">
