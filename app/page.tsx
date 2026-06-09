@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -16,13 +16,9 @@ import {
   Gift,
   ArrowLeft,
   Sun,
-  Moon,
-  Menu,
-  X
+  Moon
 } from "lucide-react";
 
-// הוסר חסימת בחירת טקסט גורפת (user-select: none) לטובת חווית משתמש טובה יותר,
-// הושארה חסימת גרירת תמונות.
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Rubik:wght=300;400;500;700;900&display=swap');
   
@@ -34,13 +30,11 @@ const fontStyles = `
     font-family: 'Rubik', sans-serif !important;
   }
   
-  /* מניעת גרירת תמונות */
   img {
     -webkit-user-drag: none;
     user-drag: none;
   }
   
-  /* רשת גריד עדינה למצב לילה */
   .premium-grid-dark {
     background-image: 
       linear-gradient(to right, rgba(255, 255, 255, 0.008) 1px, transparent 1px),
@@ -50,7 +44,6 @@ const fontStyles = `
     -webkit-mask-image: radial-gradient(ellipse at center, black 50%, transparent 100%);
   }
 
-  /* רשת גריד עדינה למצב יום - שודרג לאפור/שחור עדין */
   .premium-grid-light {
     background-image: 
       linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
@@ -61,7 +54,7 @@ const fontStyles = `
   }
 `;
 
-function NovaXLogo({ className = "w-10 h-10", isDarkMode = true }) {
+function NovaXLogo({ className = "w-10 h-10", isDarkMode = true }: { className?: string, isDarkMode?: boolean }) {
   const [imgError, setImgError] = useState(false);
 
   if (imgError) {
@@ -71,7 +64,6 @@ function NovaXLogo({ className = "w-10 h-10", isDarkMode = true }) {
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        draggable="false"
       >
         <rect width="100" height="100" rx="24" fill={isDarkMode ? "white" : "black"} />
         <path
@@ -233,31 +225,35 @@ const faqs = [
 
 export default function App() {
   const [copied, setCopied] = useState(false);
-  const [activeFaq, setActiveFaq] = useState(null);
-  const [currentView, setCurrentView] = useState("home");
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [currentView, setCurrentView] = useState<"home" | "privacy" | "terms">("home");
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   const inviteLink = "https://discord.gg/spammeril";
 
   const copyInvite = () => {
-    // מנגנון העתקה מודרני ובטוח
-    navigator.clipboard.writeText(inviteLink).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(err => {
-      // Fallback
-      const el = document.createElement('textarea');
-      el.value = inviteLink;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(inviteLink).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(() => fallbackCopyTextToClipboard(inviteLink));
+    } else {
+      fallbackCopyTextToClipboard(inviteLink);
+    }
   };
 
-  const navigateTo = (view) => {
+  const fallbackCopyTextToClipboard = (text: string) => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const navigateTo = (view: "home" | "privacy" | "terms") => {
     setCurrentView(view);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -295,7 +291,6 @@ export default function App() {
     <main className={`min-h-screen bg-gradient-to-b ${theme.gradientBg} ${theme.text} overflow-hidden transition-colors duration-500`} dir="rtl">
       <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
 
-      {/* רקע פרימיום */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
         <div className={`absolute inset-0 opacity-50 transition-opacity duration-500 ${isDarkMode ? 'premium-grid-dark' : 'premium-grid-light'}`} />
         <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full blur-[140px] transition-colors duration-500 ${theme.glowTop}`} />
@@ -304,7 +299,6 @@ export default function App() {
 
       <AnimatePresence mode="wait">
         
-        {/* ==================== עמוד הבית הראשי ==================== */}
         {currentView === "home" && (
           <motion.div
             key="home-view"
@@ -313,7 +307,6 @@ export default function App() {
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.4 }}
           >
-            {/* סרגל ניווט יוקרתי */}
             <nav className={`relative z-50 border-b backdrop-blur-xl transition-colors duration-500 ${theme.navBg}`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
                 <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => navigateTo("home")}>
@@ -354,7 +347,6 @@ export default function App() {
               </div>
             </nav>
 
-            {/* אזור ה-HERO */}
             <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-24 md:pt-44 md:pb-32">
               <div className="flex flex-col items-center text-center space-y-8 select-none">
                 
@@ -393,7 +385,6 @@ export default function App() {
                   </a>
                 </div>
 
-                {/* תיקון קריטי: שונה ל-2 עמודות במסכים קטנים, 4 במסכים גדולים */}
                 <div className={`grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 pt-10 md:pt-12 border-t w-full max-w-xl mx-auto transition-colors duration-500 ${theme.pricingDivider}`}>
                   <div>
                     <div className="text-2xl sm:text-3xl font-extrabold">200+</div>
@@ -415,7 +406,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* אזור היתרונות */}
             <section id="features" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
               <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20 select-none">
                 <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
@@ -446,7 +436,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* אזור המחירון */}
             <section id="pricing" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
               <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20 select-none">
                 <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
@@ -514,7 +503,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* אזור שאלות ותשובות */}
             <section id="faq" className={`relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
               <div className="text-center mb-10 sm:mb-16 select-none">
                 <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
@@ -563,7 +551,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* באנר קריאה לפעולה תחתון */}
             <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
               <div className={`border p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] text-center relative overflow-hidden shadow-2xl backdrop-blur-xl ${theme.legalBox}`}>
                 <div className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none ${isDarkMode?'bg-white/[0.01]':'bg-black/[0.03]'}`} />
@@ -609,7 +596,6 @@ export default function App() {
           </motion.div>
         )}
 
-        {/* ==================== עמוד מדיניות הפרטיות ==================== */}
         {currentView === "privacy" && (
           <motion.div
             key="privacy-view"
@@ -748,7 +734,6 @@ export default function App() {
           </motion.div>
         )}
 
-        {/* ==================== עמוד תקנון תנאי שימוש ==================== */}
         {currentView === "terms" && (
           <motion.div
             key="terms-view"
@@ -835,7 +820,6 @@ export default function App() {
 
       </AnimatePresence>
 
-      {/* תחתית האתר */}
       <footer className={`relative z-10 border-t backdrop-blur-md py-8 sm:py-12 transition-colors duration-500 select-none ${theme.footerBg}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-xs sm:text-sm">
           <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-center md:text-right">
