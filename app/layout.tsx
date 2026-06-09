@@ -1,29 +1,28 @@
-import './globals.css';
-import { Rubik } from 'next/font/google';
+import type { Metadata } from "next";
+import { Rubik } from "next/font/google";
+import "./globals.css"; // מוודא ש-Tailwind נטען
 
-// טעינת פונט Rubik באופן מובנה ומהיר ב-Next.js
-const rubik = Rubik({
-subsets: ['hebrew', 'latin'],
-weight: ['300', '400', '500', '700', '900'],
-display: 'swap',
-variable: '--font-rubik',
+// טעינת הפונט דרך המנגנון המובנה של Next.js
+const rubik = Rubik({ 
+  subsets: ["latin", "hebrew"],
+  weight: ['300', '400', '500', '700', '900'],
 });
 
-export const metadata = {
-title: 'NovaX | הספאמר הטוב בישראל',
-description: 'מערכת שליחת ה-SMS המתקדמת, המהירה והאמינה ביותר.',
+export const metadata: Metadata = {
+  title: "NovaX | הספאמר הטוב בישראל",
+  description: "קבלו גישה מיידית למערכת שליחת ה-SMS החזקה, המהירה והמתקדמת ביותר.",
 };
 
 export default function RootLayout({
-children,
-}: {
-children: React.ReactNode;
-}) {
-return (
-
-
-{children}
-
-
-);
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="he" dir="rtl">
+      <body className={rubik.className}>
+        {children}
+      </body>
+    </html>
+  );
 }
