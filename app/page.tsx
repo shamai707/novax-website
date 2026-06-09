@@ -19,16 +19,14 @@ import {
   Moon
 } from "lucide-react";
 
-const fontStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght=300;400;500;700;900&display=swap');
-  
+// הסרנו את הפונט מכאן (הוא נטען עכשיו מה-Layout בצורה יעילה יותר)
+const customStyles = `
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
   
   body {
-    font-family: 'Rubik', sans-serif !important;
     overflow-x: hidden;
     max-width: 100vw;
   }
@@ -292,12 +290,13 @@ export default function App() {
 
   return (
     <main className={`min-h-screen w-full relative bg-gradient-to-b ${theme.gradientBg} ${theme.text} overflow-x-hidden transition-colors duration-500`} dir="rtl">
-      <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
+      <style dangerouslySetInnerHTML={{ __html: customStyles }} />
 
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
         <div className={`absolute inset-0 opacity-50 transition-opacity duration-500 ${isDarkMode ? 'premium-grid-dark' : 'premium-grid-light'}`} />
-        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[150%] sm:w-[1000px] h-[300px] sm:h-[500px] rounded-full blur-[80px] sm:blur-[140px] transition-colors duration-500 ${theme.glowTop}`} />
-        <div className={`absolute bottom-[20%] -left-[20%] sm:left-[-10%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full blur-[80px] sm:blur-[160px] transition-colors duration-500 ${theme.glowSide}`} />
+        {/* הקטנו משמעותית את הטשטוש (Blur) ואת גודל האלמנטים במובייל למניעת קריסות */}
+        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full sm:w-[1000px] h-[300px] sm:h-[500px] rounded-full blur-[60px] sm:blur-[140px] transition-colors duration-500 ${theme.glowTop}`} />
+        <div className={`absolute bottom-[20%] -left-[20%] sm:left-[-10%] w-[250px] sm:w-[600px] h-[250px] sm:h-[600px] rounded-full blur-[60px] sm:blur-[160px] transition-colors duration-500 ${theme.glowSide}`} />
       </div>
 
       <AnimatePresence mode="wait">
@@ -311,15 +310,15 @@ export default function App() {
             transition={{ duration: 0.4 }}
           >
             <nav className={`relative z-50 border-b backdrop-blur-xl transition-colors duration-500 ${theme.navBg}`}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-                <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => navigateTo("home")}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+                <div className="flex items-center gap-2 sm:gap-3 cursor-pointer select-none" onClick={() => navigateTo("home")}>
                   <NovaXLogo className="w-8 h-8 sm:w-10 sm:h-10 shadow-xl" isDarkMode={isDarkMode} />
-                  <span className="text-xl sm:text-2xl font-semibold tracking-tight">
+                  <span className="text-lg sm:text-2xl font-bold tracking-tight">
                     Nova<span className={theme.textMuted}>X</span>
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 sm:gap-8">
+                <div className="flex items-center gap-2 sm:gap-8">
                   <div className="hidden md:flex items-center gap-8 mr-4 select-none">
                     <a href="#features" className={`text-sm font-medium ${theme.textMuted} ${theme.footerLink} transition-colors`}>יתרונות</a>
                     <a href="#pricing" className={`text-sm font-medium ${theme.textMuted} ${theme.footerLink} transition-colors`}>מחירון</a>
@@ -329,7 +328,7 @@ export default function App() {
                   <div className="flex items-center gap-2 sm:gap-3">
                     <button
                       onClick={() => setIsDarkMode(!isDarkMode)}
-                      className={`p-2 sm:p-2.5 rounded-xl transition-all duration-300 ${isDarkMode ? 'bg-[#252525] text-zinc-400 hover:text-white' : 'bg-zinc-100 text-zinc-500 hover:text-black'}`}
+                      className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ${isDarkMode ? 'bg-[#252525] text-zinc-400 hover:text-white' : 'bg-zinc-100 text-zinc-500 hover:text-black'}`}
                       aria-label="Toggle Theme"
                     >
                       {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
@@ -339,7 +338,7 @@ export default function App() {
                       href={inviteLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all hover:scale-105 flex items-center gap-2 select-none ${theme.btnPrimary}`}
+                      className={`px-3 py-2 sm:px-5 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all hover:scale-105 flex items-center gap-2 select-none ${theme.btnPrimary}`}
                     >
                       <span className="hidden sm:inline">הצטרף לדיסקורד</span>
                       <span className="sm:hidden">לדיסקורד</span>
@@ -350,110 +349,112 @@ export default function App() {
               </div>
             </nav>
 
-            <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-24 md:pt-44 md:pb-32">
-              <div className="flex flex-col items-center text-center space-y-8 select-none">
+            <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-16 sm:pt-24 sm:pb-24 md:pt-44 md:pb-32">
+              <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8 select-none">
                 
-                <div className="space-y-6 max-w-4xl">
-                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 border rounded-full text-[10px] sm:text-xs font-semibold transition-colors duration-500 ${theme.badge}`}>
+                <div className="space-y-4 sm:space-y-6 max-w-4xl">
+                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 border rounded-full text-[11px] sm:text-xs font-semibold transition-colors duration-500 ${theme.badge}`}>
                     <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-pulse ${theme.badgeDot}`} />
                     הספאמר המוביל בישראל
                   </div>
                   
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.2]">
+                  {/* טיפוגרפיה משופרת למובייל: קטן יותר כדי למנוע גלישה, שורות קריאות יותר */}
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.2]">
                     ברוכים הבאים ל-NovaX
                     <span className={`block mt-2 sm:mt-3 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white via-zinc-400 to-zinc-600' : 'from-black via-zinc-600 to-zinc-400'}`}>
-                      הספאמר הטוב ביותר בישראל
+                      הספאמר הטוב בישראל
                     </span>
                   </h1>
                   
-                  <p className={`text-sm sm:text-base md:text-xl max-w-2xl mx-auto leading-relaxed pt-2 transition-colors duration-500 ${theme.textMuted}`}>
+                  <p className={`text-sm sm:text-base md:text-xl max-w-2xl mx-auto leading-relaxed pt-2 transition-colors duration-500 px-2 ${theme.textMuted}`}>
                     קבלו גישה מיידית למערכת שליחת ה-SMS החזקה, המהירה והמתקדמת ביותר.
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-2 w-full sm:w-auto">
+                {/* כפתורים מסודרים במובייל: אחד מתחת לשני או צד לצד עם ריווח נכון */}
+                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-2 w-full sm:w-auto px-4">
                   <a
                     href="#pricing"
-                    className={`px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 w-full sm:w-auto ${theme.btnPrimary}`}
+                    className={`w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 ${theme.btnPrimary}`}
                   >
                     לרכישת קרדיטים
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
                   </a>
                   <a
                     href="#features"
-                    className={`px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-3 w-full sm:w-auto ${theme.btnSecondary}`}
+                    className={`w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-semibold transition-all flex items-center justify-center gap-3 ${theme.btnSecondary}`}
                   >
                     <Sparkles className={`w-4 h-4 sm:w-5 sm:h-5 ${theme.btnIcon}`} />
                     למה אנחנו?
                   </a>
                 </div>
 
-                <div className={`grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 pt-10 md:pt-12 border-t w-full max-w-xl mx-auto transition-colors duration-500 ${theme.pricingDivider}`}>
+                <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 pt-8 sm:pt-10 md:pt-12 border-t w-full max-w-xl mx-auto transition-colors duration-500 ${theme.pricingDivider}`}>
                   <div>
-                    <div className="text-2xl sm:text-3xl font-extrabold">200+</div>
-                    <div className={`text-[11px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>לקוחות מרוצים</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-extrabold">200+</div>
+                    <div className={`text-[10px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>לקוחות מרוצים</div>
                   </div>
                   <div>
-                    <div className="text-2xl sm:text-3xl font-extrabold">50K+</div>
-                    <div className={`text-[11px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>הודעות עובדו</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-extrabold">50K+</div>
+                    <div className={`text-[10px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>הודעות עובדו</div>
                   </div>
                   <div>
-                    <div className="text-2xl sm:text-3xl font-extrabold">24/7</div>
-                    <div className={`text-[11px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>זמינות מלאה</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-extrabold">24/7</div>
+                    <div className={`text-[10px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>זמינות מלאה</div>
                   </div>
                   <div>
-                    <div className="text-2xl sm:text-3xl font-extrabold">4.9</div>
-                    <div className={`text-[11px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>ציון משתמשים</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-extrabold">4.9</div>
+                    <div className={`text-[10px] sm:text-xs mt-1 transition-colors duration-500 ${theme.textMuted}`}>ציון משתמשים</div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section id="features" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
-              <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20 select-none">
-                <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
+            <section id="features" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
+              <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 select-none">
+                <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
                   למה לבחור במערכת שלנו?
                 </h2>
-                <p className={`text-base sm:text-lg transition-colors duration-500 ${theme.textMuted}`}>
+                <p className={`text-sm sm:text-base md:text-lg transition-colors duration-500 px-2 ${theme.textMuted}`}>
                   טכנולוגיית קצה שנועדה להעניק לכם יתרון משמעותי, יציבות מקסימלית וחוויית משתמש חסרת פשרות.
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                 {features.map((feat, idx) => {
                   const IconComp = feat.icon;
                   return (
                     <div
                       key={idx}
-                      className={`group relative p-6 sm:p-8 rounded-2xl transition-all duration-300 backdrop-blur-xl ${theme.card}`}
+                      className={`group relative p-6 sm:p-8 rounded-xl sm:rounded-2xl transition-all duration-300 backdrop-blur-xl ${theme.card}`}
                     >
-                      <div className={`mb-5 sm:mb-6 inline-flex p-3 sm:p-3.5 rounded-xl border transition-colors select-none ${theme.cardIconBox} group-hover:${isDarkMode?'bg-[#383838]':'bg-zinc-200'}`}>
+                      <div className={`mb-4 sm:mb-5 md:mb-6 inline-flex p-3 sm:p-3.5 rounded-lg sm:rounded-xl border transition-colors select-none ${theme.cardIconBox} group-hover:${isDarkMode?'bg-[#383838]':'bg-zinc-200'}`}>
                         <IconComp className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110 ${theme.cardIcon}`} />
                       </div>
                       <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 tracking-wide select-none">{feat.title}</h3>
                       <p className={`text-sm leading-relaxed ${theme.textMuted}`}>{feat.desc}</p>
-                      <div className={`absolute bottom-0 right-0 left-0 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-b-2xl ${theme.cardHoverLine}`} />
+                      <div className={`absolute bottom-0 right-0 left-0 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-b-xl sm:rounded-b-2xl ${theme.cardHoverLine}`} />
                     </div>
                   );
                 })}
               </div>
             </section>
 
-            <section id="pricing" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
-              <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20 select-none">
-                <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
+            <section id="pricing" className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
+              <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 select-none">
+                <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-4 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
                  בחרו את החבילה שלכם
                 </h2>
-                <p className={`text-base sm:text-lg transition-colors duration-500 ${theme.textMuted}`}>
+                <p className={`text-sm sm:text-base md:text-lg transition-colors duration-500 px-2 ${theme.textMuted}`}>
                   בחרו את המסלול המדויק לצרכים שלכם והצטרפו כבר עכשיו למערכת שלנו.
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-6 md:gap-8">
                 {packages.map((pkg, idx) => (
                   <div
                     key={pkg.id}
-                    className={`relative flex flex-col justify-between p-6 sm:p-8 rounded-3xl border transition-all duration-500 backdrop-blur-xl ${
+                    className={`relative flex flex-col justify-between p-6 sm:p-8 rounded-2xl sm:rounded-3xl border transition-all duration-500 backdrop-blur-xl ${
                       pkg.popular ? theme.pricingPop : theme.pricingBase
                     }`}
                   >
@@ -463,7 +464,7 @@ export default function App() {
                       </div>
                     )}
 
-                    <div className="space-y-6 text-center select-none">
+                    <div className="space-y-5 sm:space-y-6 text-center select-none">
                       <div>
                         <h3 className={`text-xs sm:text-sm font-semibold mb-1 uppercase tracking-wider ${theme.textMuted}`}>{pkg.name}</h3>
                         <div className="text-xs sm:text-sm font-bold">{pkg.credits}</div>
@@ -472,14 +473,14 @@ export default function App() {
                       <div className={`py-4 border-y ${theme.pricingDivider}`}>
                         <div className="flex items-center justify-center gap-1">
                           <span className={`text-lg sm:text-xl font-bold ${theme.textMuted}`}>₪</span>
-                          <span className="text-5xl sm:text-6xl font-black tracking-tight">{pkg.price}</span>
+                          <span className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight">{pkg.price}</span>
                         </div>
                         <span className={`text-xs mt-1 block ${theme.textMuted}`}>תשלום חד פעמי</span>
                       </div>
 
-                      <ul className="space-y-3 sm:space-y-4 pt-2 text-right">
+                      <ul className="space-y-3 sm:space-y-4 pt-2 text-right px-2">
                         {pkg.features.map((feat, j) => (
-                          <li key={j} className="flex items-center gap-3 text-sm">
+                          <li key={j} className="flex items-center gap-2 sm:gap-3 text-sm">
                             <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border flex items-center justify-center shrink-0 ${isDarkMode ? 'bg-white/10 border-white/20' : 'bg-black/[0.05] border-black/10'}`}>
                               <Check className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${theme.cardIcon}`} />
                             </div>
@@ -489,12 +490,12 @@ export default function App() {
                       </ul>
                     </div>
 
-                    <div className="pt-8 select-none">
+                    <div className="pt-6 sm:pt-8 select-none">
                       <a
                         href={inviteLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`block w-full py-3 sm:py-3.5 rounded-xl text-center font-bold text-sm transition-all hover:scale-[1.02] shadow-sm ${
+                        className={`block w-full py-3 sm:py-3.5 rounded-lg sm:rounded-xl text-center font-bold text-sm transition-all hover:scale-[1.02] shadow-sm ${
                           pkg.popular ? theme.btnPrimary : theme.btnSecondary
                         }`}
                       >
@@ -506,12 +507,12 @@ export default function App() {
               </div>
             </section>
 
-            <section id="faq" className={`relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
-              <div className="text-center mb-10 sm:mb-16 select-none">
-                <h2 className={`text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
+            <section id="faq" className={`relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 border-t transition-colors duration-500 ${theme.pricingDivider}`}>
+              <div className="text-center mb-8 sm:mb-10 md:mb-16 select-none">
+                <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2 sm:mb-3 bg-gradient-to-l bg-clip-text text-transparent ${isDarkMode ? 'from-white to-zinc-400' : 'from-black to-zinc-600'}`}>
                   רגע לפני שמתחילים
                 </h2>
-                <p className={`${theme.textMuted}`}>תשובות לשאלות הנפוצות ביותר</p>
+                <p className={`text-sm sm:text-base ${theme.textMuted}`}>תשובות לשאלות הנפוצות ביותר</p>
               </div>
 
               <div className="space-y-3 sm:space-y-4">
@@ -520,14 +521,14 @@ export default function App() {
                   return (
                     <div
                       key={idx}
-                      className={`border rounded-2xl overflow-hidden transition-colors backdrop-blur-xl ${theme.card}`}
+                      className={`border rounded-xl sm:rounded-2xl overflow-hidden transition-colors backdrop-blur-xl ${theme.card}`}
                     >
                       <button
                         onClick={() => setActiveFaq(isOpen ? null : idx)}
-                        className="w-full p-4 sm:p-6 text-right flex items-center justify-between gap-4 font-semibold focus:outline-none select-none"
+                        className="w-full p-4 sm:p-5 md:p-6 text-right flex items-center justify-between gap-3 sm:gap-4 font-semibold focus:outline-none select-none"
                       >
-                        <span className="text-sm sm:text-base md:text-lg">{faq.q}</span>
-                        <div className={`p-1.5 rounded-lg border transition-colors shrink-0 ${theme.cardIconBox}`}>
+                        <span className="text-sm sm:text-base md:text-lg pr-1">{faq.q}</span>
+                        <div className={`p-1 sm:p-1.5 rounded-md sm:rounded-lg border transition-colors shrink-0 ${theme.cardIconBox}`}>
                           <ChevronDown
                             className={`w-4 h-4 transition-transform duration-300 ${theme.cardIcon} ${isOpen ? "rotate-180" : "rotate-0"}`}
                           />
@@ -542,7 +543,7 @@ export default function App() {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.3 }}
                           >
-                            <div className={`px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t pt-3 sm:pt-4 ${theme.pricingDivider} ${theme.textMuted}`}>
+                            <div className={`px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 md:pb-6 text-sm leading-relaxed border-t pt-3 sm:pt-4 ${theme.pricingDivider} ${theme.textMuted}`}>
                               {faq.a}
                             </div>
                           </motion.div>
@@ -554,29 +555,29 @@ export default function App() {
               </div>
             </section>
 
-            <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
-              <div className={`border p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] text-center relative overflow-hidden shadow-2xl backdrop-blur-xl ${theme.legalBox}`}>
-                <div className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none ${isDarkMode?'bg-white/[0.01]':'bg-black/[0.03]'}`} />
+            <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 md:pb-24">
+              <div className={`border p-6 sm:p-8 md:p-12 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] text-center relative overflow-hidden shadow-2xl backdrop-blur-xl ${theme.legalBox}`}>
+                <div className={`absolute top-0 right-0 w-40 sm:w-80 h-40 sm:h-80 rounded-full blur-[60px] sm:blur-[100px] pointer-events-none ${isDarkMode?'bg-white/[0.01]':'bg-black/[0.03]'}`} />
                 <div className="relative z-10 max-w-2xl mx-auto space-y-4 sm:space-y-6 select-none">
-                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
                     מוכנים לצאת לדרך?
                   </h2>
-                  <p className={`text-sm sm:text-base leading-relaxed ${theme.textMuted}`}>
+                  <p className={`text-sm sm:text-base leading-relaxed px-2 ${theme.textMuted}`}>
                     הצטרפו עוד היום לקהילת הדיסקורד שלנו, פתחו טיקט רכישה בתוך שניות ותיהנו מיכולות פרימיום בלתי מתפשרות.
                   </p>
-                  <div className="pt-4 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+                  <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 w-full">
                     <a
                       href={inviteLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 w-full sm:w-auto ${theme.btnPrimary}`}
+                      className={`w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 ${theme.btnPrimary}`}
                     >
                       מעבר לדיסקורד
                       <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                     </a>
                     <button
                       onClick={copyInvite}
-                      className={`px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 w-full sm:w-auto ${
+                      className={`w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all flex items-center justify-center gap-2 ${
                         copied ? 'bg-green-500/10 text-green-600 border border-green-500/20' : theme.btnSecondary
                       }`}
                     >
@@ -606,14 +607,14 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.4 }}
-            className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12"
+            className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12"
           >
-            <div className={`flex items-center justify-between mb-10 sm:mb-16 border-b pb-4 sm:pb-6 select-none ${theme.pricingDivider}`}>
+            <div className={`flex items-center justify-between mb-8 sm:mb-10 md:mb-16 border-b pb-4 sm:pb-6 select-none ${theme.pricingDivider}`}>
               <button
                 onClick={() => navigateTo("home")}
-                className={`flex items-center gap-2 text-xs sm:text-sm transition-colors group ${theme.footerLink}`}
+                className={`flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm transition-colors group ${theme.footerLink}`}
               >
-                <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:-translate-x-1" />
                 <span className="hidden sm:inline">חזרה למסך הראשי</span>
                 <span className="sm:hidden">חזור</span>
               </button>
@@ -631,105 +632,105 @@ export default function App() {
                 מסמך משפטי
               </div>
               
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-3 sm:mb-4 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 tracking-tight">
                 הצהרת <span className={isDarkMode ? "text-zinc-500" : "text-zinc-500"}>הגנת נתונים</span>
               </h1>
               
-              <p className={`text-sm sm:text-lg ${theme.textMuted}`}>
+              <p className={`text-xs sm:text-sm md:text-lg px-4 ${theme.textMuted}`}>
                 השקיפות והביטחון שלכם הם הערך העליון שלנו
               </p>
               
-              <p className={`text-[10px] sm:text-xs mt-2 sm:mt-3 ${isDarkMode ? 'text-zinc-600' : 'text-zinc-400'}`}>
+              <p className={`text-[10px] sm:text-xs mt-3 md:mt-4 ${isDarkMode ? 'text-zinc-600' : 'text-zinc-400'}`}>
                 תאריך עדכון אחרון: מאי 2026
               </p>
             </div>
 
-            <div className={`border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 space-y-8 sm:space-y-10 leading-relaxed text-right max-w-4xl mx-auto backdrop-blur-xl ${theme.legalBox}`}>
-              <p className={`text-sm sm:text-base border-b pb-4 sm:pb-6 ${theme.pricingDivider} ${isDarkMode ? 'text-zinc-300' : 'text-zinc-800'}`}>
+            <div className={`border rounded-xl sm:rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 space-y-6 sm:space-y-8 md:space-y-10 leading-relaxed text-right max-w-4xl mx-auto backdrop-blur-xl ${theme.legalBox}`}>
+              <p className={`text-xs sm:text-sm md:text-base border-b pb-4 sm:pb-6 ${theme.pricingDivider} ${isDarkMode ? 'text-zinc-300' : 'text-zinc-800'}`}>
                 הפרטיות שלכם חשובה לנו מאין כמותה. ב-<strong>NovaX</strong> אנו מתחייבים לאסוף אך ורק את המידע המינימלי ההכרחי לתפעול תקין ויציב של המערכת.
                 <br /><br />
                 כניסתכם ושימושכם בפלטפורמה מעידים על הסכמתכם המלאה לעקרונות במפורטים במסמך זה.
               </p>
 
-              <div className="space-y-3 sm:space-y-4">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">איזה מידע נאסף אודותיכם?</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">איזה מידע נאסף אודותיכם?</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   אנו מגבילים את איסוף הנתונים לפרטים טכניים הכרחיים בלבד, שנועדו לאפשר את מתן השירות, לאבטח את הפלטפורמה ולמנוע שימוש לרעה. 
                 </p>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   חשוב להדגיש כי אין אנו אוגרים נתוני אמצעי תשלום, מספרי אשראי או פרטי חשבון בנק. כל הליכי הסליקה מבוצעים באופן בלעדי על ידי ספקים צד שלישי המוסמכים לכך.
                 </p>
               </div>
 
-              <div className={`space-y-3 sm:space-y-4 pt-4 border-t ${theme.pricingDivider}`}>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">מטרות השימוש בנתונים</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className={`space-y-2 sm:space-y-3 md:space-y-4 pt-4 border-t ${theme.pricingDivider}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">מטרות השימוש בנתונים</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   המידע המינימלי שאנו אוספים מיועד אך ורק למטרות הבאות:
                 </p>
-                <ul className={`space-y-2 sm:space-y-3 text-sm md:text-base pr-2 sm:pr-4 ${theme.textMuted}`}>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                <ul className={`space-y-2 sm:space-y-3 text-xs sm:text-sm md:text-base pr-2 sm:pr-4 ${theme.textMuted}`}>
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>ניהול הפלטפורמה והענקת גישה רציפה לשירותים.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>תקשורת מהירה ומתן סיוע טכני בעת הצורך.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>ניטור אבטחתי לאיתור ניסיונות פריצה או הונאה.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>אופטימיזציה ושיפור מתמיד של חוויית המשתמש.</span>
                   </li>
                 </ul>
               </div>
 
-              <div className={`space-y-3 sm:space-y-4 pt-4 sm:pt-6 border-t ${theme.pricingDivider}`}>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">תקני אבטחה מחמירים</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className={`space-y-2 sm:space-y-3 md:space-y-4 pt-4 border-t ${theme.pricingDivider}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">תקני אבטחה מחמירים</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   אנו מיישמים שכבות הגנה איתנות ופרוטוקולים מתקדמים כדי לשמור על כל פיסת מידע המצויה במערכותינו. יחד עם זאת, מובהר כי לא קיימת הרמטיות מוחלטת ברשת האינטרנט, וכל שימוש בפלטפורמה נעשה מתוך הבנת הסיכונים הטבעיים הקיימים בסביבה דיגיטלית.
                 </p>
               </div>
 
-              <div className={`space-y-3 sm:space-y-4 pt-4 sm:pt-6 border-t ${theme.pricingDivider}`}>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">שיתוף מידע עם גורמי חוץ</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className={`space-y-2 sm:space-y-3 md:space-y-4 pt-4 border-t ${theme.pricingDivider}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">שיתוף מידע עם גורמי חוץ</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   אנו מתחייבים כי לעולם לא נמכור או נשכיר את פרטיכם לאיש. העברת נתונים לצד שלישי תתבצע אך ורק בנסיבות החריגות הבאות:
                 </p>
-                <ul className={`space-y-2 sm:space-y-3 text-sm md:text-base pr-2 sm:pr-4 ${theme.textMuted}`}>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                <ul className={`space-y-2 sm:space-y-3 text-xs sm:text-sm md:text-base pr-2 sm:pr-4 ${theme.textMuted}`}>
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>כאשר ניתנה הסכמה מפורשת מצידכם.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>כאשר אנו מחויבים לכך מתוקף דרישה חוקית או צו שיפוטי.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>לצורך הגנה מהותית על זכויותיה וקניינה של החברה או עובדיה.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
+                  <li className="flex items-start gap-2 sm:gap-2.5">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1.5 sm:mt-2 shrink-0 animate-pulse ${theme.cardHoverLine}`} />
                     <span>במקרים של חשד סביר לביצוע עבירה פלילית דרך הפלטפורמה.</span>
                   </li>
                 </ul>
               </div>
 
-              <div className={`space-y-3 sm:space-y-4 pt-4 sm:pt-6 border-t ${theme.pricingDivider}`}>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">אחריותכם האישית</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className={`space-y-2 sm:space-y-3 md:space-y-4 pt-4 border-t ${theme.pricingDivider}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">אחריותכם האישית</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   הנכם נושאים באחריות המלאה והבלעדית לכל פעולה המתבצעת דרך חשבונכם. החברה מהווה ספקית תשתית בלבד, ואינה אמונה על טיב התוכן או ניטור פעולות הקצה של משתמשיה באופן אקטיבי.
                 </p>
               </div>
             </div>
 
-            <div className="text-center mt-8 sm:mt-12 select-none">
+            <div className="text-center mt-8 sm:mt-10 select-none">
               <button
                 onClick={() => navigateTo("home")}
-                className={`px-6 py-3 sm:px-8 sm:py-3.5 rounded-xl sm:rounded-2xl text-sm font-bold transition-all hover:scale-105 ${theme.btnSecondary}`}
+                className={`px-6 py-3 sm:px-8 sm:py-3.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all hover:scale-105 ${theme.btnSecondary}`}
               >
                 חזרה למסך הראשי
               </button>
@@ -744,14 +745,14 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.4 }}
-            className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12"
+            className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12"
           >
-            <div className={`flex items-center justify-between mb-10 sm:mb-16 border-b pb-4 sm:pb-6 select-none ${theme.pricingDivider}`}>
+            <div className={`flex items-center justify-between mb-8 sm:mb-10 md:mb-16 border-b pb-4 sm:pb-6 select-none ${theme.pricingDivider}`}>
               <button
                 onClick={() => navigateTo("home")}
-                className={`flex items-center gap-2 text-xs sm:text-sm transition-colors group ${theme.footerLink}`}
+                className={`flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm transition-colors group ${theme.footerLink}`}
               >
-                <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:-translate-x-1" />
                 <span className="hidden sm:inline">חזרה למסך הראשי</span>
                 <span className="sm:hidden">חזור</span>
               </button>
@@ -769,51 +770,51 @@ export default function App() {
                 מסמך משפטי
               </div>
               
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-3 sm:mb-4 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 tracking-tight">
                 תקנון <span className={isDarkMode ? "text-zinc-500" : "text-zinc-500"}>המערכת</span>
               </h1>
               
-              <p className={`text-sm sm:text-lg ${theme.textMuted}`}>
+              <p className={`text-xs sm:text-sm md:text-lg px-4 ${theme.textMuted}`}>
                 מסמך ההבנות המחייב לכל משתמשי הפלטפורמה
               </p>
               
-              <p className={`text-[10px] sm:text-xs mt-2 sm:mt-3 ${isDarkMode ? 'text-zinc-600' : 'text-slate-400'}`}>
+              <p className={`text-[10px] sm:text-xs mt-3 md:mt-4 ${isDarkMode ? 'text-zinc-600' : 'text-slate-400'}`}>
                 תאריך עדכון אחרון: מאי 2026
               </p>
             </div>
 
-            <div className={`border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 space-y-8 sm:space-y-10 leading-relaxed text-right max-w-4xl mx-auto backdrop-blur-xl ${theme.legalBox}`}>
-              <p className={`text-sm sm:text-base border-b pb-4 sm:pb-6 ${theme.pricingDivider} ${isDarkMode ? 'text-zinc-300' : 'text-slate-700'}`}>
+            <div className={`border rounded-xl sm:rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 space-y-6 sm:space-y-8 md:space-y-10 leading-relaxed text-right max-w-4xl mx-auto backdrop-blur-xl ${theme.legalBox}`}>
+              <p className={`text-xs sm:text-sm md:text-base border-b pb-4 sm:pb-6 ${theme.pricingDivider} ${isDarkMode ? 'text-zinc-300' : 'text-slate-700'}`}>
                 ברוכים הבאים לזירת הפעילות של <strong>NovaX</strong>. הגישה והשימוש באתר, בכלים הטכנולוגיים ובבוט שלנו מותנים בהסכמה מלאה לסעיפים המפורטים להלן.
                 <br /><br />
                 במידה ואינכם מסכימים לתנאים אלו, במלואם או בחלקם, הנכם מתבקשים לחדול מכל שימוש במערכותינו באופן מיידי.
               </p>
 
-              <div className="space-y-3 sm:space-y-4">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">חובות המשתמש בפלטפורמה</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">חובות המשתמש בפלטפורמה</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   כמשתמשי המערכת, הנכם מתחייבים לנצל את השירותים המוצעים אך ורק למטרות חוקיות, העולות בקנה אחד עם הדין החל במדינת ישראל ובמדינת היעד של נמעני ההודעות.
                 </p>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   מובהר בזאת כי חל איסור גורף ונחרץ להשתמש בתשתיות שלנו לצורך הונאות, סחיטה, התחזויות, פריצות, או כל פעילות שעשויה לפגוע בקניינו או בזכויותיו של גורם שלישי כלשהו.
                 </p>
               </div>
 
-              <div className={`space-y-3 sm:space-y-4 pt-4 sm:pt-6 border-t ${theme.pricingDivider}`}>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-wide">הצהרת היעדר אחריות מצד החברה</h3>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+              <div className={`space-y-2 sm:space-y-3 md:space-y-4 pt-4 sm:pt-6 border-t ${theme.pricingDivider}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">הצהרת היעדר אחריות מצד החברה</h3>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   כלל השירותים מוענקים במתכונת "כמות שהם" (As-Is). איננו יכולים להתחייב לרצף פעילות חסין לחלוטין מנפילות, לעקיפה מוחלטת של מנגנוני חסימה (Anti-Bot) באתרים שונים, או להבטיח את מסירת ההודעה בכל תרחיש.
                 </p>
-                <p className={`text-sm md:text-base ${theme.textMuted}`}>
+                <p className={`text-xs sm:text-sm md:text-base ${theme.textMuted}`}>
                   הנהלת NovaX פטורה באופן מלא מכל אחריות נזיקית, עקיפה או ישירה, הנובעת מתקלות זמניות, הפסקת שירות או נזקים הנובעים מאופן השימוש של המשתמשים במערכת.
                 </p>
               </div>
             </div>
 
-            <div className="text-center mt-8 sm:mt-12 select-none">
+            <div className="text-center mt-8 sm:mt-10 select-none">
               <button
                 onClick={() => navigateTo("home")}
-                className={`px-6 py-3 sm:px-8 sm:py-3.5 rounded-xl sm:rounded-2xl text-sm font-bold transition-all hover:scale-105 ${theme.btnSecondary}`}
+                className={`px-6 py-3 sm:px-8 sm:py-3.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all hover:scale-105 ${theme.btnSecondary}`}
               >
                 חזרה למסך הראשי
               </button>
@@ -823,15 +824,15 @@ export default function App() {
 
       </AnimatePresence>
 
-      <footer className={`relative z-10 border-t backdrop-blur-md py-8 sm:py-12 transition-colors duration-500 select-none ${theme.footerBg}`}>
+      <footer className={`relative z-10 border-t backdrop-blur-md py-6 sm:py-8 md:py-12 transition-colors duration-500 select-none ${theme.footerBg}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-xs sm:text-sm">
-          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-center md:text-right">
+          <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 text-center md:text-right">
             <span className={`font-bold cursor-pointer transition-colors ${theme.footerLink}`} onClick={() => navigateTo("home")}>NovaX © 2026</span>
             <span className={`hidden sm:inline-block w-1.5 h-1.5 rounded-full ${theme.footerDot}`} />
-            <span className={theme.textMuted}>השימוש באתר באחריות המשתמש בלבד.</span>
+            <span className={`text-[10px] sm:text-xs md:text-sm ${theme.textMuted}`}>השימוש באתר באחריות המשתמש בלבד.</span>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-2 md:mt-0">
+          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-0">
             <a href={inviteLink} target="_blank" rel="noopener noreferrer" className={`transition-colors ${theme.footerLink}`}>
               דיסקורד
             </a>

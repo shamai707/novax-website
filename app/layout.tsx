@@ -1,23 +1,29 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import './globals.css';
+import { Rubik } from 'next/font/google';
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// טעינת פונט Rubik באופן מובנה ומהיר ב-Next.js
+const rubik = Rubik({
+subsets: ['hebrew', 'latin'],
+weight: ['300', '400', '500', '700', '900'],
+display: 'swap',
+variable: '--font-rubik',
+});
 
-export const metadata: Metadata = {
-  title: "NovaX - SMS וירטואלי",
-  description: "SMS וירטואלי זמני לכל מטרה. קבל מספרי טלפון לקבלת SMS, מהיר ואנונימי.",
+export const metadata = {
+title: 'NovaX | הספאמר הטוב בישראל',
+description: 'מערכת שליחת ה-SMS המתקדמת, המהירה והאמינה ביותר.',
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="he" dir="rtl">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-      </body>
-    </html>
-  );
+children,
+}: {
+children: React.ReactNode;
+}) {
+return (
+
+
+{children}
+
+
+);
 }
